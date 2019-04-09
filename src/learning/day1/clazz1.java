@@ -1,4 +1,4 @@
-package learing.day1;
+package learning.day1;
 
 /*
 
@@ -126,7 +126,7 @@ public class clazz1 {
         // 获取类的反射 -> 获取的是类自己本身的对象
         try {
             // 通过路径+名称获取class，多用于外部jar包导入
-            Class<?> class1 = Class.forName("learing.day1.clazz1");
+            Class<?> class1 = Class.forName("learning.day1.clazz1");
             // 通过类名.class获取，多用于内部工程中的引用
 //            Class<?> class2 = clazz1.class;
             // 通过实例化class对象获取

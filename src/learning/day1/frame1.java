@@ -1,4 +1,4 @@
-package learing.day1;
+package learning.day1;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,11 +12,17 @@ import java.awt.event.MouseMotionListener;
  */
 
 /*
+ * package frame
  * 游戏的窗体类
  * 功能：窗体初始化，大小，关闭方式，监听绑定，画板注入
  * 继承自JFrame
  */
 public class frame1 extends JFrame {
+
+    // 窗口尺寸
+    public static final int WIDTH = 800;
+
+    public static final int HEIGHT = 600;
 
     // 键盘监听器
     private KeyListener keyListener;
@@ -37,23 +43,28 @@ public class frame1 extends JFrame {
     // 使用原因：构造方法不能被override，而init函数可以
     public void init() {
         this.setTitle("Game");
-        this.setSize(800, 600);
+        this.setSize(WIDTH, HEIGHT);
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         // 添加各种监听器
         this.addListener();
         // 添加画板
-        this.addPanel();
+        this.addJPanel();
     }
 
     // 游戏启动
     public void start() {
+        // 使用线程启动窗口
+        // 判断jPanel是否支持多线程
+        if (this.jPanel instanceof Runnable) {
+            new Thread((Runnable)jPanel).start();
+        }
         this.setVisible(true);
     }
 
     // 添加画板
-    public void addPanel() {
+    public void addJPanel() {
         if (jPanel != null) {
             this.add(jPanel);
         } else {
@@ -88,5 +99,9 @@ public class frame1 extends JFrame {
 
     public void setMouseMotionListener(MouseMotionListener mouseMotionListener) {
         this.mouseMotionListener = mouseMotionListener;
+    }
+
+    public void setjPanel(JPanel jPanel) {
+        this.jPanel = jPanel;
     }
 }
