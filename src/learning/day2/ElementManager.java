@@ -1,6 +1,8 @@
 package learning.day2;
 
 import learning.day1.frame1;
+import learning.day3.Enemy;
+import learning.day4.ElementFactory;
 
 import java.util.*;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.List;
 public class ElementManager {
 
     // 集合 NPC元素、场景元素......
-    Map<String, List<SuperElement>> map;
+    private Map<String, List<SuperElement>> map;
 
     // 单例：需要一个全局唯一的引用
     private static ElementManager elementManager;
@@ -52,9 +54,23 @@ public class ElementManager {
         map.put("Star", list);
 //        map.put("Moon", list1);
 
+        // Player List
         List<SuperElement> list2 = new ArrayList<>();
-        list2.add(Player.createPlayer(null));
+        list2.add(ElementFactory.elementFactory("Player"));
         map.put("Player", list2);
+
+        // Enemy List
+        List<SuperElement> list4 = new ArrayList<>();
+        list4.add(ElementFactory.elementFactory("Enemy"));
+        map.put("Enemy", list4);
+
+        // Enemy子弹List
+        List<SuperElement> list5 = new ArrayList<>();
+        map.put("EnemyFire", list5);
+
+        // Player子弹List
+        List<SuperElement> list3 = new ArrayList<>();
+        map.put("PlayerFire", list3);
     }
 
     // static语句块，类加载的时候执行，只执行一次

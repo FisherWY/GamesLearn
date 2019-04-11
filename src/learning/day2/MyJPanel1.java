@@ -34,7 +34,7 @@ public class MyJPanel1 extends JPanel implements Runnable{
             try {
                 // 线程休眠，控制fps，异常不能向上抛，因为子类异常比父类异常级别更高
                 // x毫秒刷新一次画板
-                Thread.sleep(8);
+                Thread.sleep(REFRESHRATE);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

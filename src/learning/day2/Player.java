@@ -1,9 +1,13 @@
 package learning.day2;
 
 import learning.day1.frame1;
+import learning.day3.CutImg;
+import learning.day3.PlayerFire;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.StrictMath.abs;
 
@@ -27,9 +31,15 @@ public class Player extends SuperElement{
     // 贴图
     private ImageIcon imageIcon;
 
+    // 攻击状态
+    private boolean pk;
+
     // 移动方向，分为上下、左右两组
     private MyEnum UDMove;
     private MyEnum LRMove;
+
+    // 记录图片左上角像素坐标
+    private CutImg cutImg;
 
     public Player(int x, int y, int w, int h, ImageIcon imageIcon) {
         super(x, y, w, h);
@@ -38,6 +48,9 @@ public class Player extends SuperElement{
         setMp(0);
         setSp(0);
         setScore(0);
+        setPk(false);
+        this.cutImg = new CutImg(imageIcon,1,2);
+        cutImg.changeImg(0,0);
 
         // 初始为静止状态
         UDMove = MyEnum.stop;
@@ -46,29 +59,29 @@ public class Player extends SuperElement{
 
     // 自定义player创建方法
     public static Player createPlayer(String s) {
-        int x = 150;
-        int y = 150;
+        int x = 400;
+        int y = 500;
         int w = 50;
         int h = 50;
-        String url = "resources/img/play/13.png";
+        String url = "resources/img/play/4.png";
         return new Player(x,y,w,h,new ImageIcon(url));
     }
 
     // player移动方法
-    public synchronized void move() {
+    public void move() {
         // 上下边界判定
         // 上下移动
         switch (UDMove) {
             case top:
                 if (getY()<0) {
-                    setY(0);
+                    break;
                 } else {
                     setY(getY()-1);
                 }
                 break;
             case down:
                 if (getY()+getH()>frame1.HEIGHT) {
-                    setY(frame1.HEIGHT-getH());
+                    break;
                 } else {
                     setY(getY()+1);
                 }
@@ -84,14 +97,14 @@ public class Player extends SuperElement{
         switch (LRMove) {
             case left:
                 if (getX()<0) {
-                    setX(0);
+                    break;
                 } else {
                     setX(getX()-1);
                 }
                 break;
             case right:
                 if (getX()+getW()>frame1.WIDTH) {
-                    setX(frame1.WIDTH-getW());
+                    break;
                 } else {
                     setX(getX()+1);
                 }
@@ -103,10 +116,55 @@ public class Player extends SuperElement{
         }
     }
 
+    // player开火方法
+    public void addFire() {
+        // 如果player不在开火状态，则直接退出
+        if (!isPk()) {
+            return;
+        }
+        List<SuperElement> list = ElementManager.getElementManager().getElementList("PlayerFire");
+        // 如果ElementManager中没有PlayerFire，则新建一个
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        // 添加子弹
+        list.add(PlayerFire.createPlayerFire(getX(),getY(),null));
+        ElementManager.getElementManager().getMap().put("PlayerFire",list);
+
+        // 每一次按键只能放一颗子弹
+        setPk(false);
+    }
+
+    @Override
+    public void update() {
+        // 如果有super，就是在父类update方法上追加
+        super.update();
+        addFire();
+    }
+
     @Override
     public void showElement(Graphics g) {
-        move();
-        g.drawImage(imageIcon.getImage(), getX(), getY(), getW(), getH(), null);
+//        move();
+        // 画一整张完整的图
+//        g.drawImage(imageIcon.getImage(), getX(), getY(), getW(), getH(), null);
+        // 截取图片一部分
+        g.drawImage(imageIcon.getImage(),
+                getX(),getY(),                          //图片输出左上角坐标
+                getX()+getW(),getY()+getH(),  //图片输出右下角坐标
+                cutImg.getTopX(),cutImg.getTopY(),//截取的图片的左上角坐标
+                cutImg.getBottomX(),cutImg.getBottomY(),//截取的图片的右下角坐标
+                null);
+        cutImg.setNoY(1-cutImg.getNoY());
+        cutImg.changeImg(0, cutImg.getNoY());
+//        System.out.println("topx: " + cutImg.getImgTopX());
+//        System.out.println("topy: " + cutImg.getImgTopY());
+//        System.out.println("bottomX: " + cutImg.getBottomX());
+//        System.out.println("bottomY: " + cutImg.getBottomY());
+    }
+
+    @Override
+    public void destroy() {
+
     }
 
     // Auto Generate
@@ -164,5 +222,13 @@ public class Player extends SuperElement{
 
     public void setLRMove(MyEnum LRMove) {
         this.LRMove = LRMove;
+    }
+
+    public boolean isPk() {
+        return pk;
+    }
+
+    public void setPk(boolean pk) {
+        this.pk = pk;
     }
 }

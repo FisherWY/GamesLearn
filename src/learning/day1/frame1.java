@@ -1,5 +1,7 @@
 package learning.day1;
 
+import learning.day3.GameThread;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
@@ -55,6 +57,9 @@ public class frame1 extends JFrame {
 
     // 游戏启动
     public void start() {
+        GameThread gameThread = new GameThread();
+        gameThread.start();
+
         // 使用线程启动窗口
         // 判断jPanel是否支持多线程
         if (this.jPanel instanceof Runnable) {

@@ -34,6 +34,16 @@ public class Star extends SuperElement {
         g.drawString(getName(), getX(), getY());
     }
 
+    @Override
+    public void move() {
+
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+
     public void updateColor() {
         // 到了更新颜色时间，更新颜色
         if (getRefreshCount() > MyJPanel1.FPS) {

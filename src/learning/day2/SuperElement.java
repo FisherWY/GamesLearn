@@ -17,6 +17,8 @@ public abstract class SuperElement {
     private int y;
     private int w;
     private int h;
+    // 默认为true，代表生命周期
+    private boolean visible;
 
     /*
      * jvm给每个类都会默认添加一个无参构造方法
@@ -30,9 +32,18 @@ public abstract class SuperElement {
         this.y = y;
         this.w = w;
         this.h = h;
+        setVisible(true);
     }
 
     public abstract void showElement(Graphics g);
+
+    public abstract void move();
+
+    public abstract void destroy();
+
+    public void update(){
+        this.move();
+    }
 
     public int getX() {
         return x;
@@ -64,5 +75,13 @@ public abstract class SuperElement {
 
     public void setH(int h) {
         this.h = h;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

@@ -22,14 +22,23 @@ public class Moon extends SuperElement {
 
     @Override
     public void showElement(Graphics g) {
-        // 如果是移动中，则位置发生变化
-        if (isMoving) {
-            setX((getX()+1)%800);
-        }
         // 边框
 //        g.drawOval(getX(), getY(), getW(), getH());
         g.setColor(getColor());
         g.fillOval(getX(), getY(), getW(), getH());
+    }
+
+    @Override
+    public void move() {
+        // 如果是移动中，则位置发生变化
+        if (isMoving) {
+            setX((getX()+1)%800);
+        }
+    }
+
+    @Override
+    public void destroy() {
+
     }
 
     public Color getColor() {

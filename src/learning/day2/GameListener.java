@@ -18,6 +18,7 @@ import java.util.List;
  *      下 -> 40
  *      左 -> 37
  *      右 -> 39
+ *      空格 -> 32
  */
 
 public class GameListener implements KeyListener {
@@ -54,6 +55,9 @@ public class GameListener implements KeyListener {
             case 39:
                 player.setLRMove(MyEnum.right);
                 break;
+            case 32:
+                player.setPk(true);
+                break;
             default:
                 break;
         }
@@ -82,6 +86,9 @@ public class GameListener implements KeyListener {
             case 39:
                 if (player.getLRMove() == MyEnum.right)
                     player.setLRMove(MyEnum.stop);
+                break;
+            case 32:
+                player.setPk(false);
                 break;
             default:
                 break;
